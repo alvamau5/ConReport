@@ -1,9 +1,18 @@
 import express from "express";
-import { createReports, getReports } from "../controllers/reportController.js";
+import {
+  createReports,
+  getReports,
+  updateReport,
+  getReportById,
+  deleteReport,
+} from "../controllers/reportController.js";
 
 const router = express.Router();
 
 router.post("/", createReports);
 router.get("/", getReports);
+router.get("/:id", getReportById);
+router.put("/:id", updateReport);
+router.delete("/:id", deleteReport);
 
 export default router;
