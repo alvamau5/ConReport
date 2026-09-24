@@ -7,18 +7,19 @@ const createReports = async (req, res) => {
     const saved = await report.save();
     res.status(201).json(saved);
   } catch (error) {
-    console.log(error);
-    res.status(400).send({ msg: error.msg || "Error creating report" });
+    console.error("[createReports]", error.message);
+    res.status(500).send({ message: error.message || "Error creating report" });
   }
 };
 const getReports = async (req, res) => {
-  // res.send({ msg: "Reports fetched successfully" });
   try {
     const reports = await Report.find().sort({ date: -1 });
     res.status(200).json(reports);
   } catch (error) {
-    console.log(error);
-    res.status(400).send({ msg: error.msg || "Error fetching reports" });
+    console.error("[getReports]", error.message);
+    res
+      .status(500)
+      .send({ message: error.message || "Error fetching reports" });
   }
 };
 
@@ -26,10 +27,11 @@ const getReportById = async (req, res) => {
   try {
     const report = await Report.findById(req.params.id);
     if (!report) {
-      return res.status(404).send({ msg: "Report not found" });
+      return res.status(404).send({ message: "Report not found" });
     }
     res.status(200).json(report);
   } catch (error) {
+    console.error("[getReportById]", error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -41,10 +43,11 @@ const updateReport = async (req, res) => {
       runValidators: true,
     });
     if (!report) {
-      return res.status(404).send({ msg: "Report not found" });
+      return res.status(404).send({ message: "Report not found" });
     }
     res.status(200).json(report);
   } catch (error) {
+    console.error("[updateReport]", error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -53,10 +56,11 @@ const deleteReport = async (req, res) => {
   try {
     const report = await Report.findByIdAndDelete(req.params.id);
     if (!report) {
-      return res.status(404).send({ msg: "Report not found" });
+      return res.status(404).send({ message: "Report not found" });
     }
-    res.status(200).json({ msg: "Report deleted successfully" });
+    res.status(200).json({ message: "Report deleted successfully" });
   } catch (error) {
+    console.error("[deleteReport]", error.message);
     res.status(500).json({ message: error.message });
   }
 };
